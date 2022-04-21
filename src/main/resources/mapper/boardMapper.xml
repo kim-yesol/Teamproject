@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.teamproject.myweb.Service.boardMapper">
+
+	<insert id="reviewRegist">
+		insert into reviewboard(
+					review_regdate,
+				    review_writer,
+				    review_category,
+				    review_lat,
+				    review_lng,
+				    review_title,
+				    review_content
+				) values(
+					#{review_regDate},
+					#{review_writer},
+					#{review_category},
+					#{review_lat},
+					#{review_lng},
+					#{review_title},
+					#{review_content}
+				)
+	</insert>
+	
+	<select id="reviewList" resultType="reviewVO">
+		SELECT *
+		FROM reviewboard
+		ORDER BY review_no DESC
+		LIMIT #{limitLeft}, #{amount};
+	</select>
+	
+	<select id="reviewTotal" resultType="int">
+		select count(*) from reviewboard
+	</select>
+	
+</mapper>
