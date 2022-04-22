@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.teamproject.myweb.command.reviewVO;
-import com.teamproject.myweb.util.review_pageVO;
+import com.teamproject.myweb.util.review_Criteria;
+
 
 
 @Mapper
@@ -13,7 +14,9 @@ public interface boardMapper {
 	
 	public int reviewRegist(reviewVO vo);
 	
-	public ArrayList<reviewVO> reviewList(review_pageVO vo);
+	public ArrayList<reviewVO> reviewList(review_Criteria cri);
 	
-	public int reviewTotal();
+	public int reviewTotal(review_Criteria cri);
+	
+	public reviewVO getDetail(int review_no);
 }

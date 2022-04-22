@@ -21,7 +21,7 @@
             <div class="col-sm-8 text-center" style="margin: 0 auto; float: none;"> 
             <form action="reviewBoard" name="reviewBoard" method="get" >
             	<input type="hidden" name="page" value="1">
-            	<input type="hidden" name="amount" value="10">
+            	<input type="hidden" name="amount" th:value="${pageVO.amount}">
                <div class="freeboard-wrap">
                 <div class="boardTitle"> 
                     <strong>리뷰게시판</strong>
@@ -29,19 +29,21 @@
                     <div class="search-wrap">
                         <div class="search-left">
                             <select name="show" id="showoption">
-                                <option value="10" >10개 보기</option>
-                                <option value="20">20개 보기</option>
-                                <option value="30">30개 보기</option>
+                                <option value="10" th:selected="${pageVO.amount} == 10 ? 'selected' ">10개 보기</option>
+                                <option value="20" th:selected="${pageVO.amount} == 20 ? 'selected' ">20개 보기</option>
+                                <option value="30" th:selected="${pageVO.amount} == 30 ? 'selected' ">30개 보기</option>
                             </select>
                         </div>
                         <div class="search-right">
                             
                                 <select name="search" id="searchoption">
-                                    <option value="">제목</option>
-                                    <option value="">지역</option>
+                                    <option value="searchtitle" selected>제목</option>
+                                    <option value="searchregion" th:selected="${pageVO.cri.search} == searchregion ? 'selected' ">지역</option>
+                                    <option value="searchwriter" th:selected="${pageVO.cri.search} == searchwriter ? 'selected' ">작성자</option>
                                 </select>
-                            
-                            <input type="text" class="input" name="#" id="searchKey" placeholder="검색어를 입력하세요.">
+                      
+                      
+                            <input type="text" class="input" name="searchKey" id="searchKey" placeholder="검색어를 입력하세요." th:value=${pageVO.cri.searchKey}>
                             <input type="button" class="input" value="검색" id="searchBtn">
                             <!--submit-->
                         </div>
@@ -61,7 +63,7 @@
                            <td>[[${vo.review_no}]] </td>
                            <td class="region">[[${vo.review_category}]]</td>
                            <td class="writer">[[${vo.review_writer}]]</td>
-                           <td class="title"><a href="#">[[${vo.review_title}]]</a></td>
+                           <td class="title"><a th:href="@{/board/reviewDetail(review_no = ${vo.review_no})}">[[${vo.review_title}]]</a></td>
                            <td class="regdate">[[${#temporals.format(vo.review_regDate, 'yyyy-MM-dd')}]]</td>
                         </tr>
                         </th:block>
@@ -70,18 +72,24 @@
                         <div class="page_nation">
                         	<th:block th:if=${pageVO.prev}>
                             <a class="arrow pprev" th:href="@{/board/reviewBoard(page = 1,
-                            								 amount = ${pageVO.amount})}"></a>
+                            								 amount = ${pageVO.amount},
+                            								 search = ${pageVO.cri.search},
+                            								 searchKey = ${pageVO.cri.searchKey} ) }"></a>
                             </th:block>
                             
                             <th:block th:if="${pageVO.prev}">
                             <a class="arrow prev" th:href="@{/board/reviewBoard(page = ${pageVO.start}-10,
-                            								 amount = ${pageVO.amount})}"></a>
+                            								 amount = ${pageVO.amount},
+                            								 search = ${pageVO.cri.search},
+                            								 searchKey = ${pageVO.cri.searchKey} ) }"></a>
                             </th:block>
                             
                             <th:block th:each="page : ${pageVO.pageList}">
                             
                             <a th:href="@{/board/reviewBoard(page = ${page},
-                            								 amount = ${pageVO.amount})}" class="active">
+                            								 amount = ${pageVO.amount},
+                            								 search = ${pageVO.cri.search},
+                            								 searchKey = ${pageVO.cri.searchKey} ) }" th:class="${pageVO.page == page ? 'active' : ''}">
                             								 [[${page}]]
                             </a>
                             
@@ -89,12 +97,16 @@
                             
                             <th:block th:if="${pageVO.next}">
                             <a class="arrow next" th:href="@{/board/reviewBoard(page = ${pageVO.start}+10,
-                            								 amount = ${pageVO.amount})}"></a>
+                            								 amount = ${pageVO.amount},
+                            								 search = ${pageVO.cri.search},
+                            								 searchKey = ${pageVO.cri.searchKey} ) }"></a>
                             </th:block>
                             
                             <th:block th:if="${pageVO.next}">
                             <a class="arrow nnext" th:href="@{/board/reviewBoard(page = ${pageVO.realend},
-                            								 amount = ${pageVO.amount})}"></a>
+                            								 amount = ${pageVO.amount},
+                            								 search = ${pageVO.cri.search},
+                            								 searchKey = ${pageVO.cri.searchKey} ) }"></a>
                             </th:block>
                         </div>
                         <div class="write-wrap">
@@ -116,7 +128,6 @@
 	
 	(function(){
 		var msg = JSON.parse('[[${msg}]]');
-		console.log(msg);
 		if(msg != null){
 			alert(msg);		
 		}
@@ -125,6 +136,23 @@
 		document.reviewBoard.amount.value= $(e.target).val();
 		document.reviewBoard.submit();
 		});
+		
+		$("#searchoption").on("change", function(e){
+			$("#selecter").attr("name", $(e.target).val());
+		});
+		
+		
+		var btn = $("#searchBtn")[0];
+		btn.onclick = function(e){
+			e.preventDefault();
+			if($("#searchKey").val() == "" || $("#searchKey").val() == null){
+				alert("검색어는 최소 한개이상을 입력해주세요");
+				return;	
+			}
+			
+			
+			document.reviewBoard.submit();
+		}
 		
 	})();
 	

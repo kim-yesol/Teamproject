@@ -22,14 +22,20 @@ public class boardServiceImpl implements boardService{
 	}
 
 	@Override
-	public ArrayList<reviewVO> reviewList(review_pageVO vo) {
-		return boardmapper.reviewList(vo);
+	public ArrayList<reviewVO> reviewList(review_Criteria cri) {
+		return boardmapper.reviewList(cri);
 	}
 
 	@Override
-	public int reviewTotal() {
-		return boardmapper.reviewTotal();
+	public int reviewTotal(review_Criteria cri) {
+		return boardmapper.reviewTotal(cri);
 	}
+
+	@Override
+	public reviewVO getDetail(int review_no) {
+		return boardmapper.getDetail(review_no);
+	}
+	
 	
 	
 }

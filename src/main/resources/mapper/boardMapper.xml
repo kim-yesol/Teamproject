@@ -13,7 +13,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				    review_lat,
 				    review_lng,
 				    review_title,
-				    review_content
+				    review_content,
+				    review_realAddress
 				) values(
 					#{review_regDate},
 					#{review_writer},
@@ -21,19 +22,51 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					#{review_lat},
 					#{review_lng},
 					#{review_title},
-					#{review_content}
+					#{review_content},
+					#{review_realAddress}
 				)
 	</insert>
 	
 	<select id="reviewList" resultType="reviewVO">
+		<![CDATA[
 		SELECT *
 		FROM reviewboard
+		]]>
+		<if test = "search != null and search == 'searchtitle' ">
+		WHERE review_title LIKE CONCAT('%', #{searchKey},'%')
+		</if>
+		<if test = "search != null and search == 'searchregion' ">
+		WHERE review_category LIKE CONCAT('%', #{searchKey},'%')
+		</if>
+		<if test = "search != null and search == 'searchwriter' ">
+		WHERE review_writer LIKE CONCAT('%', #{searchKey},'%')
+		</if>
+		
+		<![CDATA[
 		ORDER BY review_no DESC
-		LIMIT #{limitLeft}, #{amount};
+		LIMIT #{limitLeft}, #{amount}
+		]]>
 	</select>
 	
 	<select id="reviewTotal" resultType="int">
+	<![CDATA[
 		select count(*) from reviewboard
+		]]>
+		<if test = "search != null and search == 'searchtitle' ">
+		WHERE review_title LIKE CONCAT('%', #{searchKey},'%')
+		</if>
+		<if test = "search != null and search == 'searchregion' ">
+		WHERE review_category LIKE CONCAT('%', #{searchKey},'%')
+		</if>
+		<if test = "search != null and search == 'searchwriter' ">
+		WHERE review_writer LIKE CONCAT('%', #{searchKey},'%')
+		</if>
+	</select>
+	
+	<select id="getDetail" resultType="reviewVO">
+		SELECT *
+		FROM reviewboard
+		WHERE review_no = #{review_no}
 	</select>
 	
 </mapper>

@@ -16,7 +16,7 @@ public class review_pageVO {
 	private int amount;
 	private int total;
 	private int page;
-	private int limitLeft;
+
 	
 	private boolean next;
 	private boolean prev;
@@ -46,7 +46,7 @@ public class review_pageVO {
 		
 		this.pageList = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
 		
-		this.limitLeft = (this.amount*(this.page-1)) + 1;
+
 	}
 	
 }
