@@ -23,7 +23,6 @@ class TeamProjectApplicationTests {
 							  .review_title("제목"+i)
 							  .review_writer("저자" + i)
 							  .build();
-			boardservice.reviewRegist(vo);
 		}
 	}
 

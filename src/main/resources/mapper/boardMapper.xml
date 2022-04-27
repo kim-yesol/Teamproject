@@ -25,6 +25,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 	</insert>
 	
+	<insert id="reviewFileRegist">
+		
+		<selectKey resultType="int" order="BEFORE" keyProperty="review_no">
+			select max(REVIEW_NO) as REVIEW_NO
+			from REVIEWBOARD
+			where REVIEW_WRITER = #{review_writer};
+		</selectKey>
+		
+		insert into review_upload(
+			review_filename,
+			review_filepath,
+			review_uuid,
+			review_no,
+			review_writer
+		) values(
+			#{review_filename},
+			#{review_filepath},
+			#{review_uuid},
+			#{review_no},
+			#{review_writer}
+		)
+		
+	</insert>
+	
 	<select id="reviewList" resultType="reviewVO">
 		<![CDATA[
 		SELECT *
@@ -86,6 +110,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getLocation" resultType="MainVO">
 		SELECT REVIEW_LAT,REVIEW_LNG
 		FROM REVIEWBOARD
+	</select>
+	
+	<select id="userCheckes" resultType="UserVO">
+		SELECT * FROM USER
+		WHERE USER_ID = #{user_id} AND USER_PW = #{user_pw};
+	</select>
+	
+	<select id="getImg" resultType="Review_uploadVO">
+		SELECT * FROM REVIEW_UPLOAD
+		WHERE REVIEW_NO = #{review_no}
 	</select>
 	
 </mapper>

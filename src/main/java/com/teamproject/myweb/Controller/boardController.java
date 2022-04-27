@@ -1,6 +1,8 @@
 package com.teamproject.myweb.Controller;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,9 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.teamproject.myweb.Service.boardService;
+import com.teamproject.myweb.command.Review_uploadVO;
 import com.teamproject.myweb.command.reviewVO;
 import com.teamproject.myweb.util.review_Criteria;
 import com.teamproject.myweb.util.review_pageVO;
@@ -55,7 +59,10 @@ public class boardController {
 	public String reviewUpdate(@RequestParam("review_no") int review_no, Model model) {
 		
 		reviewVO vo =  boardservice.getDetail(review_no);
+		ArrayList<Review_uploadVO> list = boardservice.getImg(review_no);
+		
 		model.addAttribute("UpdateVO", vo);
+		model.addAttribute("Imglist", list);
 		
 		return "board/reviewUpdate";
 	}
@@ -92,16 +99,29 @@ public class boardController {
 	
 	@GetMapping("/reviewDetail")
 	public String reviewdetail(@RequestParam("review_no") int review_no, Model model) {
+		
+		
 		reviewVO vo =  boardservice.getDetail(review_no);
+		ArrayList<Review_uploadVO> list = boardservice.getImg(review_no);
+		
 		model.addAttribute("detailVO", vo);
+		model.addAttribute("Imglist", list);
 		return "board/reviewDetail";
 	}
 	
 	@PostMapping("/reviewForm")
-	public String reviewform(reviewVO vo,Model model, RedirectAttributes RA) {
+	public String reviewform(reviewVO vo,Model model, RedirectAttributes RA,@RequestParam("file") List<MultipartFile> list) {
 		
+		list = list.stream().filter( f -> f.isEmpty() == false).collect( Collectors.toList());
 		
-		int result = boardservice.reviewRegist(vo);
+		for(MultipartFile f : list) {
+			if(f.getContentType().contains("image") == false) {
+				RA.addFlashAttribute("msg","이미지파일을 넣으세요");
+				return "redirect:/board/reviewBoard";
+			}
+		}
+		
+		int result = boardservice.reviewRegist(vo,list);
 		
 		if(result == 1) {
 			RA.addFlashAttribute("msg", "등록성공");

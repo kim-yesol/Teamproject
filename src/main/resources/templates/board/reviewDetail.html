@@ -82,20 +82,15 @@
                                                     <th>사진</th>
                                                     <td>
                                                         <div class="filebox preview-image">
+                                                        <th:block th:each="imgs : ${Imglist}">
                                                             <div class="left">
                                                                 <label class="upload-display" for="a_file">
                                                                     <span class="upload-thumb-wrap">
-                                                                        <img class="upload-thumb" th:src="@{/img/plus_btn.png}">
+                                                                        <img class="upload-thumb" th:src="@{../display(review_filepath=${imgs.review_filepath}, review_uuid=${imgs.review_uuid}, review_filename=${imgs.review_filename} ) }">
                                                                     </span>
                                                                 </label>
                                                             </div>
-                                                            <div class="left">
-                                                                <label class="upload-display" for="b_file">
-                                                                    <span class="upload-thumb-wrap">
-                                                                        <img class="upload-thumb" th:src="@{/img/plus_btn.png}">
-                                                                    </span>
-                                                                </label>
-                                                            </div>
+                                                         </th:block>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -150,8 +145,7 @@
   }
   
   
-   $(document).ready(function(){
-
+   $(document).ready(function(){   
 
     var map = new naver.maps.Map("map", {
         center: new naver.maps.LatLng(lng, lat),
