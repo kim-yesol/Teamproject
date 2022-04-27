@@ -25,5 +25,5 @@ public interface boardMapper {
 	
 	public int deleteReview(int review_no);
 	
-	public MainVO getLocation();
+	public ArrayList<MainVO> getLocation();
 }

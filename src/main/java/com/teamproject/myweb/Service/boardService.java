@@ -22,5 +22,5 @@ public interface boardService {
 	
 	public int deleteReview(int review_no);
 	
-	public MainVO getLocation();
+	public ArrayList<MainVO> getLocation();
 }

@@ -1,0 +1,13 @@
+create table reviewboard(
+	review_no int auto_increment primary key,
+    review_regDate timestamp default now(),
+    review_category varchar(100),
+    review_writer varchar(50),
+    review_lat varchar(30) not null,
+    review_lng varchar(30) not null,
+    review_title varchar(100) not null,
+    review_content varchar(2000),
+    review_realAddress varchar(200) not null
+);
+
+

@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class MainVO {
 	
-	private String lat;
-	private String lng;
+	private String review_lat;
+	private String review_lng;
 }

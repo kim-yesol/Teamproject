@@ -48,7 +48,7 @@ public class boardServiceImpl implements boardService{
 	}
 
 	@Override
-	public MainVO getLocation() {
+	public ArrayList<MainVO> getLocation() {
 		return boardmapper.getLocation();
 	}
 	
