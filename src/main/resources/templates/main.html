@@ -15,12 +15,11 @@
   <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
   <script th:src="@{/js/jquery-ui.min.js}"></script>
   <script th:src="@{/js/showMoreItems.min.js}"></script>
-  <script th:src="@{/js/map.js}"></script>
   
   <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}">
   <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
   <link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
-  <link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
+  <link rel="preconnect" th:href="@{https://fonts.gstatic.com}" >
   <link th:href="@{https://fonts.googleapis.com/css2?family=Lato&display=swap}" rel="stylesheet">
   <link rel="stylesheet" type="text/css" th:href="@{/css/showMoreItems-theme.min.css}" />
 
@@ -135,7 +134,7 @@
               <span style="font-size: 20px; font-weight: bold;">음식 종류</span>
           </div>
           <div>
-              <input type="checkbox" name="" id="checkbox1">
+              <input type="checkbox" name="" id="checkbox1" th:onclick="|food_check()|">
               <label for="checkbox1">
                   <div>
                       <span>한식</span>
@@ -143,7 +142,7 @@
               </label>
           </div>
           <div>
-              <input type="checkbox" name="" id="checkbox2">
+              <input type="checkbox" name="" id="checkbox2" th:onclick="|food_check()|">
               <label for="checkbox2">
                   <div>
                       <span>중식</span>
@@ -151,7 +150,7 @@
               </label>
           </div>
           <div>
-              <input type="checkbox" name="" id="checkbox3">
+              <input type="checkbox" name="" id="checkbox3" th:onclick="|food_check()|">
               <label for="checkbox3">
                   <div>
                       <span>일식</span>
@@ -159,7 +158,7 @@
               </label>
           </div>
           <div>
-              <input type="checkbox" name="" id="checkbox4">
+              <input type="checkbox" name="" id="checkbox4" th:onclick="|food_check()|">
               <label for="checkbox4">
                   <div>
                       <span>양식</span>
@@ -585,8 +584,24 @@
 
 </script>
 
-<script>
+<script th:inline="javascript">
+
+function food_check(){
+	if(this.checked){
+		console.log(1);
+	}
+}
+
+
+
 $(document).ready(function(){
+
+	$.getJSON("../getLocation",function(data){
+		console.log(1);
+		console.log(data);
+	});
+	
+	
   var map = new naver.maps.Map("map", {
       zoom: 6,
       center: new naver.maps.LatLng(36.2253017, 127.6460516),
@@ -728,8 +743,7 @@ function updateMarkers(map, markers) {
           showMarker(map, marker);
       } else {
           hideMarker(map, marker);
-      }
-      if(i == 100) break;
+      } 
       //데이터갯수가 많으면 멈춤
   }
 }

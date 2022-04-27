@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.teamproject.myweb.command.MainVO;
 import com.teamproject.myweb.command.reviewVO;
 import com.teamproject.myweb.util.review_Criteria;
 
@@ -19,4 +20,10 @@ public interface boardMapper {
 	public int reviewTotal(review_Criteria cri);
 	
 	public reviewVO getDetail(int review_no);
+	
+	public int updateReview(reviewVO vo);
+	
+	public int deleteReview(int review_no);
+	
+	public MainVO getLocation();
 }

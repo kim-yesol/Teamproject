@@ -20,7 +20,7 @@
         <div class="warp_inner">
             <div class="right_content">
                 <div class="midiaq">
-                    <form name="#####" action="#####" method="post">
+                    <form name="review_Detail" action="reviewUpdate" method="get">
                         <div class="full_collum collum">
                             <ul>
                                 <li class="collum_tit">
@@ -40,6 +40,7 @@
                                                     <th>아이디</th>
                                                     <td>
                                                         [[${detailVO.review_writer}]]
+                                                        <input type="hidden" name="review_no" th:value="${detailVO.review_no}">
                                                     </td>
                                                 </tr>
 
@@ -115,7 +116,8 @@
                                             </table>
                                             <div class="btn_area">
                                             	<input type="button" class="save" onclick="location.href='reviewBoard' " value="목록">
-                                                <input type="button" class="update" value="수정">
+                                            	<input type="button" class="save" value="수정"  th:onclick="|modify_function()|">
+                                                
                                             </div>
                                         </li>
 
@@ -140,14 +142,14 @@
   var lng = "[[${detailVO.review_lng}]]";
   var lat = "[[${detailVO.review_lat}]]";
   var review_realAddress = "[[${detailVO.review_realAddress}]]";
-function linkfuntion(x,y,z) {
-	console.log(z);
-      $(".output").val(z + "  선택완료");
-      $("#lat").val(x);
-      $("#lng").val(y);
-      $("#realAddress").val(z);
-    }
+  var review_no = "[[${detailVO.review_no}]]";
 
+  function modify_function(){
+	  this.event.preventDefault();
+	  location.href='reviewUpdate?review_no='+review_no;
+  }
+  
+  
    $(document).ready(function(){
 
 

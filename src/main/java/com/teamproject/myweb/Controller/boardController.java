@@ -37,22 +37,57 @@ public class boardController {
 		
 		review_pageVO vo = new review_pageVO(cri , boardservice.reviewTotal(cri));
 		
-		System.out.println(vo.toString());
-		
 		ArrayList<reviewVO> reviewList =  boardservice.reviewList(cri);
 		
 
 		
 		model.addAttribute("pageVO", vo);
-		
 		model.addAttribute("reviewVO", reviewList);
-		
 		return "board/reviewBoard";
 	}
 	
 	@GetMapping("/reviewReg")
 	public String reivewReg() {
 		return "board/reviewReg";
+	}
+	
+	@GetMapping("/reviewUpdate")
+	public String reviewUpdate(@RequestParam("review_no") int review_no, Model model) {
+		
+		reviewVO vo =  boardservice.getDetail(review_no);
+		model.addAttribute("UpdateVO", vo);
+		
+		return "board/reviewUpdate";
+	}
+	
+	@PostMapping("/reviewModfiy")
+	public String reviewModfiy(reviewVO vo, RedirectAttributes RA) {
+		System.out.println(vo.toString());
+		
+		int result = boardservice.updateReview(vo);
+		
+		if(result == 1) {
+			RA.addFlashAttribute("msg", "수정성공");
+		} else {
+			RA.addFlashAttribute("msg", "수정실패");
+		}
+		
+		return "redirect:/board/reviewBoard";
+	}
+	
+	
+	@PostMapping("/reviewDetele")
+	public String reviewDetele(@RequestParam("review_no") int review_no,RedirectAttributes RA) {
+		
+		int result = boardservice.deleteReview(review_no);
+		
+		if(result == 1) {
+			RA.addFlashAttribute("msg", "삭제성공");
+		} else {
+			RA.addFlashAttribute("msg", "삭제실패");
+		}
+		
+		return "redirect:/board/reviewBoard";
 	}
 	
 	@GetMapping("/reviewDetail")
@@ -65,7 +100,6 @@ public class boardController {
 	@PostMapping("/reviewForm")
 	public String reviewform(reviewVO vo,Model model, RedirectAttributes RA) {
 		
-		System.out.println(vo.toString());
 		
 		int result = boardservice.reviewRegist(vo);
 		

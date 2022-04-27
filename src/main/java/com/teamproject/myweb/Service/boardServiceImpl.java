@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.teamproject.myweb.command.MainVO;
 import com.teamproject.myweb.command.reviewVO;
 import com.teamproject.myweb.util.review_Criteria;
 import com.teamproject.myweb.util.review_pageVO;
@@ -35,7 +36,21 @@ public class boardServiceImpl implements boardService{
 	public reviewVO getDetail(int review_no) {
 		return boardmapper.getDetail(review_no);
 	}
-	
+
+	@Override
+	public int updateReview(reviewVO vo) {
+		return boardmapper.updateReview(vo);
+	}
+
+	@Override
+	public int deleteReview(int review_no) {
+		return boardmapper.deleteReview(review_no);
+	}
+
+	@Override
+	public MainVO getLocation() {
+		return boardmapper.getLocation();
+	}
 	
 	
 }
